@@ -6,9 +6,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.Select;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
+import java.util.List;
 
 public class CreateCustomerTest {
     public WebDriver driver;
@@ -67,12 +69,31 @@ public class CreateCustomerTest {
         Alert accountAlert = driver.switchTo().alert();
         String accountAlertText = accountAlert.getText();
         System.out.println(accountAlertText);
+        String [] accountsArray = accountAlertText.split(":");
+        String accountNumber = accountsArray[1];
+        System.out.println(accountsArray[1]);
         accountAlert.accept();
 
         WebElement showCustomerElement = driver.findElement(By.xpath("//button[@ng-click='showCust()']"));
         showCustomerElement.click();
 
+//        //Adaugam un wait fortat care sa ne garanteze ca cele doua componente comunica intre ele;
+//        try {
+//            Thread.sleep(1000);
+//        } catch (InterruptedException e) {
+//        }
+
         WebElement searchCustomerElement = driver.findElement(By.xpath("//input[@placeholder = 'Search Customer']"));
-        searchCustomerElement.sendKeys(fullname);
+        searchCustomerElement.sendKeys(firstNameValue);
+
+        List<WebElement> tableRows = driver.findElements(By.xpath("//tbody/tr"));
+        String customerTableRow = tableRows.get(0).getText();
+        Assert.assertTrue(customerTableRow.contains(firstNameValue));
+        Assert.assertTrue(customerTableRow.contains(lastNameValue));
+        Assert.assertTrue(customerTableRow.contains(postCodeValue));
+        Assert.assertTrue(customerTableRow.contains(accountNumber));
+
+        WebElement deleteCustomerElement = driver.findElement(By.xpath("//button[@ng-click='deleteCust(cust)']"));
+        deleteCustomerElement.click();
     }
 }
