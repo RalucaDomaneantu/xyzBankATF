@@ -1,46 +1,55 @@
 package pages;
 
+import models.CustomerModel;
 import org.openqa.selenium.Alert;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
+import utils.LogUtility;
 
 import java.util.List;
 
-public class CustomerPage {
-    public WebDriver driver;
+public class CustomerPage extends BasePage{
 
-    public CustomerPage(WebDriver driver) {
-        this.driver = driver;
-        PageFactory.initElements(driver, this);
-    }
     @FindBy(xpath = "//input[@placeholder='First Name']")
-    public WebElement firstNameElement;
+    private WebElement firstNameElement;
 
     @FindBy(xpath = "//input[@placeholder='Last Name']")
-    public WebElement lastNameElement;
+    private WebElement lastNameElement;
 
     @FindBy(xpath = "//input[@placeholder='Post Code']")
-    public WebElement postCodeElement;
+    private WebElement postCodeElement;
 
     @FindBy(xpath = "//button[@type='submit']")
-    public WebElement submitCustomerElement;
+    private WebElement submitCustomerElement;
 
     @FindBy(xpath = "//button[@ng-click='openAccount()']")
-    public WebElement openAccountElement;
+    private WebElement openAccountElement;
 
-    public void createCustomerProcess(String firstNameValue, String lastNameValue, String postCodeValue){
+    public CustomerPage(WebDriver driver) {
+        super(driver);
+    }
 
-        firstNameElement.sendKeys(firstNameValue);
-        lastNameElement.sendKeys(lastNameValue);
-        postCodeElement.sendKeys(postCodeValue);
+    public void createCustomerProcess(CustomerModel testData){
+
+        firstNameElement.sendKeys(testData.getFirstNameValue());
+        LogUtility.infoLog("The user fills first name field with value: " + testData.getFirstNameValue());
+
+        lastNameElement.sendKeys(testData.getLastNameValue());
+        LogUtility.infoLog("The user fills last name field with value: " + testData.getLastNameValue());
+
+        postCodeElement.sendKeys(testData.getPostCodeValue());
+        LogUtility.infoLog("The user fills postcode field with value: " + testData.getPostCodeValue());
+
         submitCustomerElement.click();
+        LogUtility.infoLog("The user clicks on submit button");
+
         Alert customerAlert = driver.switchTo().alert();
         String customerAlertText = customerAlert.getText();
         System.out.println(customerAlertText);
         customerAlert.accept();
+        LogUtility.infoLog("The user accepts the alert with message: " + customerAlertText);
+
     }
 
     public void createCustomersProcess(List<String> firstNameValueList,List<String> lastNameValueList,List<String> postCodeValueList){
