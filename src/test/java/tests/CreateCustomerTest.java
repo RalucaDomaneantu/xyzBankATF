@@ -12,7 +12,7 @@ public class CreateCustomerTest extends SharedData {
     //pentru acest concept se accepta diferite extensii de fisiere
     //key=value
 
-    @Test
+    @Test(groups = {SuiteType.REGRESSION_SUITE, SuiteType.CUSTOMER_SUITE, SuiteType.ACCOUNT_SUITE})
     public void automationTest(){
         CustomerModel testData = new CustomerModel("src/test/resources/CustomerData.json");
 
