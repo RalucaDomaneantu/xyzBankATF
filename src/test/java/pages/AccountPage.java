@@ -4,8 +4,10 @@ import models.CustomerModel;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.bidi.log.Log;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
+import utils.LogUtility;
 
 public class AccountPage extends BasePage
 {
@@ -29,9 +31,11 @@ public class AccountPage extends BasePage
 
         Select selectCustomer = new Select(customerName);
         selectCustomer.selectByVisibleText(testdata.getFullname());
+        LogUtility.infoLog("The user selects " + testdata.getFullname() + "value from dropdown");
 
         Select selectCurrency = new Select(currency);
         selectCurrency.selectByVisibleText(testdata.getCurrencyValue());
+        LogUtility.infoLog("The user clicks on process button");
 
         process.click();
 
@@ -40,13 +44,14 @@ public class AccountPage extends BasePage
         System.out.println(accountAlertText);
         String [] accountsArray = accountAlertText.split(":");
         String accountNumber = accountsArray[1];
-        System.out.println(accountsArray[1]);
         accountAlert.accept();
+        LogUtility.infoLog("The user accepts the account creation alert");
 
     }
 
     public void openCustomersPage(){
         showCustomerElement.click();
+        LogUtility.infoLog("The user clicks on Customers page");
 
     }
 }
